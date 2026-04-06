@@ -1,12 +1,44 @@
 import express from 'express'   
 
-const app = express()
-const port = 3000
+import 'dotenv/config'
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+import webRouters from './routes/WEB'
+
+
+const app = express()
+const port = process.env.PORT ||  3000
+
+
+
+
+
+
+// THIẾT LẬP EJS LÀ VIEW ENGINE CHO ỨNG DỤNG
+app.set('view engine', 'ejs');
+//  NÓ LẤY ĐƯỜNG LÌNH CHUẨN ĐẾN THƯ MỤC VIEWS ĐỂ RENDER FILE EJS
+app.set('views', __dirname + '/views');
+
+
+// THIẾT LẬP EXPRESS ĐỂ XỬ LÝ DỮ LIỆU FORM
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+
+
+
+
+// file tĩnh sẽ được phục vụ từ thư mục 'public'
+app.use(express.static('public'))
+
+
+
+
+// SỬ DỤNG WEB ROUTERS
+webRouters(app)
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
+    console.log('process.env.PORT', process.env.PORT)
 })
