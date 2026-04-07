@@ -1,4 +1,7 @@
+import { prisma } from "config/client";
 import getConnection from "../config/database"
+import { PrismaClient } from '@prisma/client'
+
 
 // Hàm tạo user mới
 const handleCreateUser = async (
@@ -6,76 +9,46 @@ const handleCreateUser = async (
     email: string,
     address: string
 ) => {
-    const connection = await getConnection();
-
-    try {
-        const sql = 'INSERT INTO `users`(`name`, `email`, `address`) VALUES (?, ?, ?)';
-        const values = [fullName, email, address];
-
-        const [result] = await connection.execute(sql, values);
-        return result;
-    } catch (err) {
-        console.log(err);
-        return null;
-    }
-}
+    const newUser = await prisma.user.create({
+        data: {
+            name: fullName,
+            email: email,
+            address: address
+        }
+    });
+    return newUser;
+};
 
 // Hàm lấy toàn bộ danh sách user
 const getAllUsers = async () => {
-    const connection = await getConnection();
-
-    try {
-        const [results] = await connection.query('SELECT * FROM `users`');
-        return results;
-    } catch (err) {
-        console.log(err);
-        return [];
-    }
+    const users = await prisma.user.findMany();
+    return users;
 }
 
 // Hàm xóa user theo id
 const handleDeleteUser = async (id: string) => {
-    try {
-        const connection = await getConnection();
-        const sql = 'DELETE FROM `users` WHERE `id` = ?';
-        const values = [id];
-        const [result] = await connection.execute(sql, values);
-        return result;
-    } catch (err) {
-        console.log(err);
-        return null;
-    }
+const deleteUser = await prisma.user.delete({where: { id: +id }});
 }
 
 // Hàm xem chi tiết user theo id
 const getUserById = async (id: string) => {
-    try {
-        const connection = await getConnection();
-        const sql = 'SELECT * FROM `users` WHERE `id` = ?';
-        const values = [id];
-        const [result] = await connection.execute(sql, values);
-        return result[0] ;
-    } catch (err) {
-        console.log(err);
-        return null;
-    }
+   const user = await prisma.user.findUnique({
+        where: { id: +id }
+    });
+    return user;
 }
 
 // Hàm cập nhật user theo id
 const updateUserById = async (id: string, email: string, address: string , fullName: string ) => {
-    try {
-        const connection = await getConnection();
-
-        const sql = 'UPDATE `users` SET `name` = ? , `email` = ? , `address` = ? WHERE `id` = ? ';
-        const values = [fullName, email, address, id];
-
-        const [result, fields] = await connection.execute(sql, values);
-
-        console.log(result);
-        console.log(fields);
-    } catch (err) {
-        console.log(err);
-    }
+    const updateUser = await prisma.user.update({
+        where: { id: +id },
+        data: {
+            name: fullName,
+            email: email,
+            address: address,
+        }
+    });
+    return updateUser;
 }
 
 
