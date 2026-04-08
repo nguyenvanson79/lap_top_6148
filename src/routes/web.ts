@@ -1,15 +1,17 @@
-import express, { Express} from 'express'
+import express, { Express } from 'express'
 
 const router = express.Router()
 import {
-    getHomePage ,
+    getHomePage,
     getCreateUserPage,
     postCreateUser,
-    postDeleteUser , 
+    postDeleteUser,
     getViewUser,
-    postUpdateUser
-    
+    postUpdateUser,
+
+
 } from '../controllers/user.controller'
+import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderPage  } from 'controllers/admin/dashboard.controller'
 
 
 
@@ -19,18 +21,24 @@ import {
 
 
 const webRouters = (app: Express) => {
-     router.get ("/" , getHomePage)
-  
-     router.get ("/create-user" , getCreateUserPage )
+    router.get("/", getHomePage)
 
-     router.post("/handle-create-user", postCreateUser)            
+    router.get("/create-user", getCreateUserPage)
 
-     router.post("/delete-user/:id", postDeleteUser)
+    router.post("/handle-create-user", postCreateUser)
 
-     router.get("/edit-user/:id", getViewUser )
+    router.post("/delete-user/:id", postDeleteUser)
+
+    router.get("/edit-user/:id", getViewUser)
 
     router.post("/handle-update-user", postUpdateUser)
 
+    // admin page
+    router.get("/admin", getDashboardPage)
+    router.get("/admin/user", getAdminUserPage)
+    router.get("/admin/product", getAdminProductPage)
+    router.get("/admin/order", getAdminOrderPage)
+    router.get("/admin/create-user", getCreateUserPage)
 
 
     app.use('/', router)

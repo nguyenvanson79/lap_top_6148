@@ -2,7 +2,8 @@ import express from 'express'
 
 import 'dotenv/config'
 
-import webRouters from './routes/WEB'
+import webRouters from './routes/web'
+import initDatabase from 'config/seed'
 
 
 const app = express()
@@ -37,6 +38,8 @@ app.use(express.static('public'))
 // SỬ DỤNG WEB ROUTERS
 webRouters(app)
 
+// seeding data 
+initDatabase()
 
 
 app.listen(port, () => {
