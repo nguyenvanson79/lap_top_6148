@@ -4,27 +4,29 @@ import {
     handleCreateUser,
     handleDeleteUser,
     getUserById,
-    updateUserById
+    updateUserById,
+    getAllRoles
 } from "services/user.service";
+
+
 
 // Hiển thị trang chủ và danh sách user
 const getHomePage = async (req: Request, res: Response) => {
     const users = await getAllUsers();
-    console.log("users:", users);
-
     return res.render("home.ejs", { users });
 };
 
 // Hiển thị trang form tạo user
-const getCreateUserPage = (req: Request, res: Response) => {
-    return res.render("admin/user/create.ejs");
+const getCreateUserPage = async (req: Request, res: Response) => {
+    const roles = await getAllRoles();
+    return res.render("admin/user/create.ejs", { roles });
 };
 
 // Xử lý tạo user mới từ dữ liệu form
 const postCreateUser = async (req: Request, res: Response) => {
-    const { fullName, email, address } = req.body;
+    const { fullName, username, phone, role, address } = req.body;
 
-    await handleCreateUser(fullName, email, address);
+    // await handleCreateUser(fullName, username, address);
 
     return res.redirect("/");
 };
@@ -32,7 +34,6 @@ const postCreateUser = async (req: Request, res: Response) => {
 // Xử lý xóa user theo id
 const postDeleteUser = async (req: Request, res: Response) => {
     const { id } = req.params as { id: string };
-    console.log("delete id =", id);
 
     await handleDeleteUser(id);
 

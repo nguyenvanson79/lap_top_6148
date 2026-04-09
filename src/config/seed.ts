@@ -1,14 +1,22 @@
-// tạo data face 
-
 import { prisma } from "./client"
 
 const initDatabase = async () => {
-
     const countUsers = await prisma.user.count();
-    if (countUsers > 0) {
-        console.log('Database already seeded. Skipping seeding process.');
-        return;
+    const countRoles = await prisma.role.count();
+
+    if (countRoles === 0) {
+        await prisma.role.createMany({
+            data: [
+                { name: "admin", description: "Administrator role" },
+                { name: "user", description: "User role" }
+            ]
+        });
+        console.log("Seeded roles");
     } else {
+        console.log("Roles already exist. Skipping roles.");
+    }
+
+    if (countUsers === 0) {
         await prisma.user.createMany({
             data: [
                 {
@@ -21,16 +29,16 @@ const initDatabase = async () => {
                 {
                     fullName: "Le Thi B",
                     username: "lethib",
-                    address: "456 Elm St ",
+                    address: "456 Elm St",
                     password: "password456",
                     accountType: "user",
                 }
-
-
             ]
-        })    }
-
-   
+        });
+        console.log("Seeded users");
+    } else {
+        console.log("Users already exist. Skipping users.");
+    }
 }
 
-export default initDatabase
+export default initDatabase;

@@ -11,9 +11,10 @@ import {
 
 
 } from '../controllers/user.controller'
-import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderPage  } from 'controllers/admin/dashboard.controller'
+import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderPage } from 'controllers/admin/dashboard.controller'
 
-
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 
 
@@ -25,7 +26,6 @@ const webRouters = (app: Express) => {
 
     router.get("/create-user", getCreateUserPage)
 
-    router.post("/handle-create-user", postCreateUser)
 
     router.post("/delete-user/:id", postDeleteUser)
 
@@ -39,7 +39,10 @@ const webRouters = (app: Express) => {
     router.get("/admin/product", getAdminProductPage)
     router.get("/admin/order", getAdminOrderPage)
     router.get("/admin/create-user", getCreateUserPage)
-
+    // router.post("/admin/handle-create-user", upload.single('avatar'), postCreateUser)
+    router.post("/admin/handle-create-user", upload.single('avatar'), (req, res) => {
+        res.send('File uploaded successfully');
+    })
 
     app.use('/', router)
 }
