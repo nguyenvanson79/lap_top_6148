@@ -12,9 +12,9 @@ import {
 
 } from '../controllers/user.controller'
 import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderPage } from 'controllers/admin/dashboard.controller'
+import fileUploadMiddleware from 'src/middleware/multer'
+import { getAdminCreateProductPage } from 'controllers/product.controller'
 
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
 
 
 
@@ -22,27 +22,33 @@ const upload = multer({ dest: 'uploads/' })
 
 
 const webRouters = (app: Express) => {
-    router.get("/", getHomePage)
 
+
+    // client page
+    router.get("/", getHomePage)
     router.get("/create-user", getCreateUserPage)
 
 
-    router.post("/delete-user/:id", postDeleteUser)
 
-    router.get("/edit-user/:id", getViewUser)
 
-    router.post("/handle-update-user", postUpdateUser)
 
     // admin page
     router.get("/admin", getDashboardPage)
     router.get("/admin/user", getAdminUserPage)
-    router.get("/admin/product", getAdminProductPage)
     router.get("/admin/order", getAdminOrderPage)
     router.get("/admin/create-user", getCreateUserPage)
-    // router.post("/admin/handle-create-user", upload.single('avatar'), postCreateUser)
-    router.post("/admin/handle-create-user", upload.single('avatar'), (req, res) => {
-        res.send('File uploaded successfully');
-    })
+    router.post("/admin/handle-create-user",fileUploadMiddleware('avatar') , postCreateUser)
+    router.post("/admin/delete-user/:id", postDeleteUser)
+    router.get("/admin/edit-user/:id", getViewUser)
+    router.post("/admin/update-user",fileUploadMiddleware('avatar'), postUpdateUser)
+
+    router.get("/admin/product", getAdminProductPage)
+    router.get("/admin/create-product", getAdminCreateProductPage)
+
+
+
+
+  
 
     app.use('/', router)
 }

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Create Product | Laptop Shop</title>
+
+    <link href="/admin/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .main-content-wrapper {
+            padding: 2rem 1rem;
+        }
+
+        .create-user-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+            overflow: hidden;
+            background: var(--glass-bg);
+        }
+
+        .create-user-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .avatar-upload-section {
+            position: relative;
+            margin-top: -60px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #avatarPreview {
+            width: 130px;
+            height: 130px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background-color: #eee;
+        }
+
+        .upload-btn-wrapper {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+        }
+
+        .btn-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .btn-submit {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="sb-nav-fixed">
+    <%- include('../layout/header'); -%>
+
+        <div id="layoutSidenav">
+            <%- include('../layout/sidenav'); -%>
+
+                <div id="layoutSidenav_content">
+                    <main class="main-content-wrapper">
+                        <div class="container">
+
+                            <div class="row justify-content-center">
+                                <div class="col-lg-10 col-xl-8">
+                                    <div class="card create-user-card shadow">
+
+                                        <!-- HEADER -->
+                                        <div class="create-user-header">
+                                            <h2 class="fw-bold">Create New Product</h2>
+                                        </div>
+
+                                        <div class="card-body p-4 p-md-5">
+
+                                            <!-- FORM -->
+                                            <form action="/admin/product/create" method="POST"
+                                                enctype="multipart/form-data">
+
+                                                <!-- IMAGE -->
+                                                <div class="avatar-upload-section">
+                                                    <img src="https://via.placeholder.com/150" id="avatarPreview">
+                                                    <div class="upload-btn-wrapper">
+                                                        <label for="imageFile" class="btn btn-primary btn-circle">
+                                                            <i class="fas fa-camera"></i>
+                                                        </label>
+                                                        <input type="file" id="imageFile" name="image" hidden>
+                                                    </div>
+                                                </div>
+
+                                                <!-- INPUT -->
+                                                <div class="row g-4">
+
+                                                    <!-- NAME -->
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Product Name</label>
+                                                        <input name="name" type="text" class="form-control" required>
+                                                    </div>
+
+                                                    <!-- PRICE -->
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Price</label>
+                                                        <input name="price" type="number" class="form-control" required>
+                                                    </div>
+
+                                                    <!-- SHORT DESC -->
+                                                    <div class="col-12">
+                                                        <label class="form-label">Short Description</label>
+                                                        <input name="shortDesc" type="text" class="form-control">
+                                                    </div>
+
+                                                    <!-- DETAIL DESC -->
+                                                    <div class="col-12">
+                                                        <label class="form-label">Detail Description</label>
+                                                        <textarea name="detailDesc" rows="4"
+                                                            class="form-control"></textarea>
+                                                    </div>
+
+                                                    <!-- QUANTITY -->
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Quantity</label>
+                                                        <input name="quantity" type="number" class="form-control">
+                                                    </div>
+
+                                                    <!-- FACTORY -->
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Factory</label>
+                                                        <input name="factory" type="text" class="form-control">
+                                                    </div>
+
+                                                    <!-- TARGET -->
+                                                    <div class="col-12">
+                                                        <label class="form-label">Target</label>
+                                                        <input name="target" type="text" class="form-control">
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- BUTTON -->
+                                                <div class="row mt-5">
+                                                    <div class="col-6">
+                                                        <a href="/admin/product" class="btn btn-light w-100">
+                                                            Cancel
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button class="btn btn-primary btn-submit w-100 text-white">
+                                                            Create Product
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </main>
+
+                    <%- include('../layout/footer'); -%>
+                </div>
+        </div>
+
+        <!-- SCRIPT -->
+        <script>
+            $("#imageFile").change(function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    $("#avatarPreview").attr("src", URL.createObjectURL(file));
+                }
+            });
+        </script>
+
+</body>
+
+</html>

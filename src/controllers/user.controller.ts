@@ -12,8 +12,9 @@ import {
 
 // Hiển thị trang chủ và danh sách user
 const getHomePage = async (req: Request, res: Response) => {
-    const users = await getAllUsers();
-    return res.render("home.ejs", { users });
+
+
+    return res.render("client/home/show.ejs");
 };
 
 // Hiển thị trang form tạo user
@@ -26,9 +27,12 @@ const getCreateUserPage = async (req: Request, res: Response) => {
 const postCreateUser = async (req: Request, res: Response) => {
     const { fullName, username, phone, role, address } = req.body;
 
-    // await handleCreateUser(fullName, username, address);
+    const file = req.file;
+    const avatar = file?.filename || "";
 
-    return res.redirect("/");
+    await handleCreateUser(fullName, username, address, phone, avatar , role);
+
+    return res.redirect("/admin/user");
 };
 
 // Xử lý xóa user theo id
@@ -37,26 +41,33 @@ const postDeleteUser = async (req: Request, res: Response) => {
 
     await handleDeleteUser(id);
 
-    return res.redirect("/");
+    return res.redirect("/admin/user");
 };
 
 // xem chi tiết user theo id
 const getViewUser = async (req: Request, res: Response) => {
     const { id } = req.params as { id: string };
     const user = await getUserById(id);
+    const roles = await getAllRoles();
 
-    return res.render("view-users.ejs", {
+
+    return res.render("admin/user/detail.ejs", {
         id: id,
-        user: user
+        user: user,
+        roles: roles
     });
 };
 
 // Xử lý cập nhật user theo id
 const postUpdateUser = async (req: Request, res: Response) => {
-    const { id, fullName, email, address } = req.body;
-    await updateUserById(id, email, address, fullName);
+    const { id , fullName, phone, role, address } = req.body;
 
-    return res.redirect("/");
+    const file = req.file;
+    const avatar = file?.filename || "";
+
+    await updateUserById(id, fullName, phone, role, address, avatar);
+
+    return res.redirect("/admin/user");
 };
 
 
