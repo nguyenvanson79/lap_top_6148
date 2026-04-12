@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="laptopshop" />
+    <meta name="description" content="font-family  " />
     <meta name="author" content="laptop" />
     <title>manage user </title>
     <link href="/admin/css/styles.css" rel="stylesheet" />
@@ -26,7 +26,7 @@
                             </ol>
                             <div>
                                 <div class="container mt-5">
-                                
+
                                     <!-- Header + Button -->
                                     <div class="d-flex justify-content-between align-items-center mb-4">
                                         <h2 class="fw-bold text-primary">📋 List Users</h2>
@@ -34,11 +34,11 @@
                                             + Create New User
                                         </a>
                                     </div>
-                                
+
                                     <!-- Card -->
                                     <div class="card shadow-lg border-0">
                                         <div class="card-body p-4">
-                                
+
                                             <!-- Table -->
                                             <div class="table-responsive">
                                                 <table class="table table-hover align-middle text-center">
@@ -51,10 +51,10 @@
                                                             <th>ACTION</th>
                                                         </tr>
                                                     </thead>
-                                
+
                                                     <tbody>
                                                         <% users.forEach( function (user) { %>
-                                
+
                                                             <tr>
                                                                 <td class="fw-semibold text-secondary">
                                                                     <%= user.id %>
@@ -70,28 +70,31 @@
                                                                 </td>
                                                                 <td>
                                                                     <div class="d-flex justify-content-center gap-2">
-                                
-                                                                        <form action="/admin/edit-user/<%= user.id %>" method="get">
-                                                                            <button class="btn btn-sm btn-warning shadow-sm">Edit</button>
+
+                                                                        <form action="/admin/edit-user/<%= user.id %>"
+                                                                            method="get">
+                                                                            <button
+                                                                                class="btn btn-sm btn-warning shadow-sm">Edit</button>
                                                                         </form>
-                                
-                                
-                                                                        <form action="/admin/delete-user/<%= user.id %>" method="post">
+
+
+                                                                        <form action="/admin/delete-user/<%= user.id %>"
+                                                                            method="post">
                                                                             <button type="submit"
                                                                                 class="btn btn-sm btn-danger shadow-sm">Delete</button>
                                                                         </form>
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                
+
                                                             <% }) %>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                
+
                                         </div>
                                     </div>
-                                
+
                                 </div>
                             </div>
                         </div>

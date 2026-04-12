@@ -6,6 +6,7 @@ import webRouters from './routes/web'
 import initDatabase from 'config/seed'
 
 
+
 const app = express()
 const port = process.env.PORT ||  3000
 
@@ -20,7 +21,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 
-// THIẾT LẬP EXPRESS ĐỂ XỬ LÝ DỮ LIỆU FORM
+// THIẾT LẬP EXPRESS ĐỂ XỬ LÝ DỮ LIỆU FORM  "middleware"
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,8 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-// file tĩnh sẽ được phục vụ từ thư mục 'public'
+// file tĩnh sẽ được phục vụ từ thư mục 'public' "middleware"
 app.use(express.static('public'))
+
+
 
 
 
@@ -40,6 +43,13 @@ webRouters(app)
 
 // seeding data 
 initDatabase()
+
+
+
+app.use((req: express.Request, res: express.Response) => {
+    res.send("404")
+
+})
 
 
 app.listen(port, () => {

@@ -7,199 +7,210 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Create Product | Laptop Shop</title>
 
+    <!-- CSS -->
     <link href="/admin/css/styles.css" rel="stylesheet" />
+
+    <!-- ICON + JQUERY -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.95);
-        }
-
         body {
-            background-color: #f0f2f5;
+            background: #f5f7fb;
         }
 
-        .main-content-wrapper {
-            padding: 2rem 1rem;
-        }
-
-        .create-user-card {
+        .card-custom {
             border: none;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
-            overflow: hidden;
-            background: var(--glass-bg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
-        .create-user-header {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
+        .header-gradient {
+            background: linear-gradient(135deg, #667eea, #764ba2);
         }
 
-        .avatar-upload-section {
-            position: relative;
-            margin-top: -60px;
-            margin-bottom: 30px;
-            text-align: center;
+        .avatar-wrapper {
+            margin-top: -70px;
         }
 
         #avatarPreview {
-            width: 130px;
-            height: 130px;
-            border-radius: 12px;
+            width: 140px;
+            height: 140px;
             object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            background-color: #eee;
+            border-radius: 16px;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .upload-btn-wrapper {
+        .upload-btn {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-        }
-
-        .btn-circle {
-            width: 35px;
-            height: 35px;
+            bottom: 0;
+            right: 50%;
+            transform: translate(50%, 50%);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .form-control,
         .form-select {
             border-radius: 12px;
-            padding: 12px;
+            padding: 10px 12px;
         }
 
-        .btn-submit {
-            background: var(--primary-gradient);
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
-            border-radius: 12px;
-            padding: 12px;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-2px);
+        .btn-gradient:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
 
 <body class="sb-nav-fixed">
+
+    <!-- HEADER -->
     <%- include('../layout/header'); -%>
 
         <div id="layoutSidenav">
+
+            <!-- SIDENAV -->
             <%- include('../layout/sidenav'); -%>
 
                 <div id="layoutSidenav_content">
-                    <main class="main-content-wrapper">
+                    <main class="py-4">
                         <div class="container">
 
                             <div class="row justify-content-center">
                                 <div class="col-lg-10 col-xl-8">
-                                    <div class="card create-user-card shadow">
 
-                                        <!-- HEADER -->
-                                        <div class="create-user-header">
-                                            <h2 class="fw-bold">Create New Product</h2>
-                                        </div>
+                                    <div class="card card-custom overflow-hidden">
 
-                                        <div class="card-body p-4 p-md-5">
 
-                                            <!-- FORM -->
-                                            <form action="/admin/product/create" method="POST"
-                                                enctype="multipart/form-data">
 
-                                                <!-- IMAGE -->
-                                                <div class="avatar-upload-section">
-                                                    <img src="https://via.placeholder.com/150" id="avatarPreview">
-                                                    <div class="upload-btn-wrapper">
-                                                        <label for="imageFile" class="btn btn-primary btn-circle">
-                                                            <i class="fas fa-camera"></i>
-                                                        </label>
-                                                        <input type="file" id="imageFile" name="image" hidden>
-                                                    </div>
+                                        <% errors.forEach( function (error) { %>
+
+                                            <div class="alert alert-danger mb-3">
+                                                <%= error %>
+                                            </div>
+
+                                            <% }) %>
+
+                                                <!-- HEADER -->
+                                                <div class="header-gradient text-white text-center py-4">
+                                                    <h3 class="fw-bold mb-0">Create New Product</h3>
                                                 </div>
 
-                                                <!-- INPUT -->
-                                                <div class="row g-4">
+                                                <div class="card-body p-4 p-md-5">
 
-                                                    <!-- NAME -->
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Product Name</label>
-                                                        <input name="name" type="text" class="form-control" required>
-                                                    </div>
+                                                    <form action="/admin/create-product" method="POST"
+                                                        enctype="multipart/form-data">
 
-                                                    <!-- PRICE -->
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Price</label>
-                                                        <input name="price" type="number" class="form-control" required>
-                                                    </div>
+                                                        <!-- AVATAR -->
+                                                        <div class="text-center position-relative avatar-wrapper mb-5">
+                                                            <img src="https://via.placeholder.com/150"
+                                                                id="avatarPreview">
 
-                                                    <!-- SHORT DESC -->
-                                                    <div class="col-12">
-                                                        <label class="form-label">Short Description</label>
-                                                        <input name="shortDesc" type="text" class="form-control">
-                                                    </div>
+                                                            <label for="imageFile"
+                                                                class="btn btn-primary upload-btn d-flex align-items-center justify-content-center">
+                                                                <i class="fas fa-camera text-white"></i>
+                                                            </label>
+                                                            <input type="file" id="imageFile" name="image" hidden>
+                                                        </div>
 
-                                                    <!-- DETAIL DESC -->
-                                                    <div class="col-12">
-                                                        <label class="form-label">Detail Description</label>
-                                                        <textarea name="detailDesc" rows="4"
-                                                            class="form-control"></textarea>
-                                                    </div>
+                                                        <!-- FORM -->
+                                                        <div class="row g-4">
 
-                                                    <!-- QUANTITY -->
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Quantity</label>
-                                                        <input name="quantity" type="number" class="form-control">
-                                                    </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label fw-semibold">Product
+                                                                    Name</label>
+                                                                <input value="<%= oldData.name %>" name="name" type="text" class="form-control">
+                                                            </div>
 
-                                                    <!-- FACTORY -->
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Factory</label>
-                                                        <input name="factory" type="text" class="form-control">
-                                                    </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label fw-semibold">Price</label>
+                                                                <input value="<%= oldData.price %>" name="price" type="number" class="form-control">
+                                                            </div>
 
-                                                    <!-- TARGET -->
-                                                    <div class="col-12">
-                                                        <label class="form-label">Target</label>
-                                                        <input name="target" type="text" class="form-control">
-                                                    </div>
+                                                            <div class="col-12">
+                                                                <label class="form-label fw-semibold">Short
+                                                                    Description</label>
+                                                                <input value="<%= oldData.shortDesc %>" name="shortDesc" type="text"
+                                                                    class="form-control">
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <label class="form-label fw-semibold">Detail
+                                                                    Description</label>
+                                                                <textarea  name="detailDesc" rows="4"
+                                                                    class="form-control"><%= oldData.detailDesc %></textarea>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="form-label fw-semibold">Quantity</label>
+                                                                <input value="<%= oldData.quantity %>" name="quantity" type="number"
+                                                                    class="form-control">
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="form-label fw-semibold">Factory</label>
+                                                                <select  name="factory" class="form-select">
+                                                                    <option value="APPLE">Apple (MacBook)</option>
+                                                                    <option value="ASUS">Asus</option>
+                                                                    <option value="LENOVO">Lenovo</option>
+                                                                    <option value="DELL">Dell</option>
+                                                                    <option value="LG">LG</option>
+                                                                    <option value="ACER">Acer</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <label class="form-label fw-semibold">Target</label>
+                                                                <select name="target" class="form-select">
+                                                                    <option value="GAMING">Gaming</option>
+                                                                    <option value="SINHVIEN-VANPHONG">Sinh viên - Văn
+                                                                        phòng
+                                                                    </option>
+                                                                    <option value="THIET-KE-DO-HOA">Thiết kế đồ họa
+                                                                    </option>
+                                                                    <option value="MONG-NHE">Mỏng nhẹ</option>
+                                                                    <option value="DOANH-NHAN">Doanh nhân</option>
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- BUTTON -->
+                                                        <div class="row mt-5 g-3">
+                                                            <div class="col-md-6">
+                                                                <a href="/admin/product"
+                                                                    class="btn btn-outline-secondary w-100 rounded-3">
+                                                                    Cancel
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <button
+                                                                    class="btn btn-gradient text-white w-100 rounded-3">
+                                                                    Create Product
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
 
                                                 </div>
-
-                                                <!-- BUTTON -->
-                                                <div class="row mt-5">
-                                                    <div class="col-6">
-                                                        <a href="/admin/product" class="btn btn-light w-100">
-                                                            Cancel
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <button class="btn btn-primary btn-submit w-100 text-white">
-                                                            Create Product
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                            </form>
-
-                                        </div>
                                     </div>
+
                                 </div>
                             </div>
 
                         </div>
                     </main>
 
+                    <!-- FOOTER -->
                     <%- include('../layout/footer'); -%>
                 </div>
         </div>

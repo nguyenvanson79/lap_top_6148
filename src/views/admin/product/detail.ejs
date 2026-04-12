@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>View Product | Laptop Shop</title>
+
+    <!-- CSS -->
+    <link href="/admin/css/styles.css" rel="stylesheet" />
+
+    <!-- ICON + JQUERY -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <style>
+        body {
+            background: #f5f7fb;
+        }
+
+        .card-custom {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-gradient {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .avatar-wrapper {
+            margin-top: -70px;
+        }
+
+        #avatarPreview {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translate(50%, 50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+        }
+
+        .btn-gradient:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body class="sb-nav-fixed">
+
+    <!-- HEADER -->
+    <%- include('../layout/header'); -%>
+
+        <div id="layoutSidenav">
+
+            <!-- SIDENAV -->
+            <%- include('../layout/sidenav'); -%>
+
+                <div id="layoutSidenav_content">
+                    <main class="py-4">
+                        <div class="container">
+
+                            <div class="row justify-content-center">
+                                <div class="col-lg-10 col-xl-8">
+
+                                    <div class="card card-custom overflow-hidden">
+
+
+
+                                 
+
+                                                <!-- HEADER -->
+                                                <div class="header-gradient text-white text-center py-4">
+                                                    <h3 class="fw-bold mb-0">View Product</h3>
+                                                </div>
+
+                                                <div class="card-body p-4 p-md-5">
+
+                                                    <form action="/admin/update-product" method="POST"
+                                                        enctype="multipart/form-data">
+
+                                                        <input value="<%= product.id %> " type="text">
+
+                                                        <!-- AVATAR -->
+                                                        <% if (product.image) { %>
+                                                            <img src="/images/product/<%= product.image %>"
+                                                                id="avatarPreview" alt="Preview">
+                                                            <% } else { %>
+                                                                <img src="https://www.w3schools.com/howto/img_avatar.png"
+                                                                    id="avatarPreview" alt="Preview">
+                                                                <% } %>
+
+                                                                    <!-- FORM -->
+                                                                    <div class="row g-4">
+
+                                                                        <div class="col-md-6">
+                                                                            <label
+                                                                                class="form-label fw-semibold">Product
+                                                                                Name</label>
+                                                                            <input value="<%= product.name %>"
+                                                                                name="name" type="text"
+                                                                                class="form-control">
+                                                                        </div>
+
+                                                                        <div class="col-md-6">
+                                                                            <label
+                                                                                class="form-label fw-semibold">Price</label>
+                                                                            <input value="<%= product.price %>"
+                                                                                name="price" type="number"
+                                                                                class="form-control">
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <label class="form-label fw-semibold">Short
+                                                                                Description</label>
+                                                                            <input value="<%= product.shortDesc %>"
+                                                                                name="shortDesc" type="text"
+                                                                                class="form-control">
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <label class="form-label fw-semibold">Detail
+                                                                                Description</label>
+                                                                            <textarea name="detailDesc" rows="4"
+                                                                                class="form-control"><%= product.detailDesc %></textarea>
+                                                                        </div>
+
+                                                                        <div class="col-md-6">
+                                                                            <label
+                                                                                class="form-label fw-semibold">Quantity</label>
+                                                                            <input value="<%= product.quantity %>"
+                                                                                name="quantity" type="number"
+                                                                                class="form-control">
+                                                                        </div>
+
+                                                                        <div class="col-md-6">
+                                                                            <label
+                                                                                class="form-label fw-semibold">Factory</label>
+                                                                            <select name="factory" class="form-select">
+                                                                                <% factoryOptions.forEach((factory,
+                                                                                    index)=> { %>
+                                                                                    <option value="<%= factory.value %>"
+                                                                                        <%=factory.value===product.factory
+                                                                                        ? 'selected' : '' %>
+                                                                                        >
+                                                                                        <%= factory.name %>
+                                                                                    </option>
+                                                                                    <% }) %>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <label
+                                                                                class="form-label fw-semibold">Target</label>
+                                                                            <select name="target" class="form-select">
+                                                                                <% targetOptions.forEach((target,
+                                                                                    index)=> { %>
+                                                                                    <option value="<%= target.value %>"
+                                                                                        <%=target.value===product.target
+                                                                                        ? 'selected' : '' %>
+                                                                                        >
+                                                                                        <%- target.name %>
+                                                                                    </option>
+                                                                                    <% }) %>
+                                                                            </select>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <!-- BUTTON -->
+                                                                    <div class="row mt-5 g-3">
+                                                                        <div class="col-md-6">
+                                                                            <a href="/admin/product"
+                                                                                class="btn btn-outline-secondary w-100 rounded-3">
+                                                                                Cancel
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-6">
+                                                                            <button
+                                                                                class="btn btn-gradient text-white w-100 rounded-3">
+                                                                                Create Product
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+                                                    </form>
+
+                                                </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </main>
+
+                    <!-- FOOTER -->
+                    <%- include('../layout/footer'); -%>
+                </div>
+        </div>
+
+        <!-- SCRIPT -->
+        <script>
+            $("#imageFile").change(function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    $("#avatarPreview").attr("src", URL.createObjectURL(file));
+                }
+            });
+        </script>
+
+</body>
+
+</html>

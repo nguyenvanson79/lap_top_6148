@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `products` MODIFY `detailDesc` MEDIUMTEXT NOT NULL,
+    MODIFY `sold` INTEGER NULL DEFAULT 0;

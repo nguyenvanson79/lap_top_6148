@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { getProducts } from "services/client/item.service";
 import {
     getAllUsers,
     handleCreateUser,
@@ -10,11 +11,11 @@ import {
 
 
 
-// Hiển thị trang chủ và danh sách user
 const getHomePage = async (req: Request, res: Response) => {
+    const products = await getProducts();
 
 
-    return res.render("client/home/show.ejs");
+    return res.render("client/home/show.ejs", { products });
 };
 
 // Hiển thị trang form tạo user

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="laptopshop" />
+    <meta name="description" content="font-family  " />
     <meta name="author" content="laptop" />
     <title>manage products </title>
     <link href="/admin/css/styles.css" rel="stylesheet" />
@@ -53,10 +53,46 @@
                                                     </thead>
 
                                                     <tbody>
-                                                       
+                                                        <% products.forEach( function (product) { %>
+
+                                                            <tr>
+                                                                <td class="fw-semibold text-secondary">
+                                                                    <%= product.id %>
+                                                                </td>
+                                                                <td class="fw-bold text-dark">
+                                                                    <%= product.name %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= product.price %>
+                                                                </td>
+                                                                <td class="text-muted">
+                                                                    <%= product.factory %>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="d-flex justify-content-center gap-2">
+
+                                                                        <form
+                                                                            action="/admin/view-product/<%= product.id %>"
+                                                                            method="get">
+                                                                            <button
+                                                                                class="btn btn-sm btn-warning shadow-sm">View</button>
+                                                                        </form>
 
 
-                                        
+                                                                        <form
+                                                                            action="/admin/delete-product/<%= product.id %>"
+                                                                            method="post">
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-danger shadow-sm">Delete</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+
+                                                            <% }) %>
+
+
+
                                                     </tbody>
                                                 </table>
                                             </div>
