@@ -103,14 +103,22 @@
                             <h2 class="fw-bold text-dark">Chào Mừng Trở Lại</h2>
                             <p class="text-muted small">Vui lòng đăng nhập để tiếp tục</p>
                         </div>
-
+<%
+    const safeMessages = Array.isArray(typeof messages !== "undefined" ? messages : null) ? messages : [];
+    const safeOldData = typeof oldData !== "undefined" && oldData ? oldData : { username: "" };
+%>
+<% safeMessages.forEach(function(error) { %>
+    <div class="alert alert-danger mb-3">
+        <%= error %>
+    </div>
+    <% }) %>
                         <form action="/login" method="POST">
 
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Tên đăng nhập</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
-                                    <input type="text" name="username" class="form-control"
+                                    <input value="<%= safeOldData.username || '' %>" type="text" name="username" class="form-control"
                                         placeholder="Tên đăng nhập của bạn" required>
                                 </div>
                             </div>

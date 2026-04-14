@@ -2,7 +2,7 @@ import { prisma } from "config/client";
 import { PrismaClient } from '@prisma/client'
 import { ACCOUNT_TYPE } from "config/constant";
 
-import bcrypt from'bcrypt' ;
+import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
 
@@ -10,14 +10,19 @@ const hashPassword = async (plaintext: string) => {
     return await bcrypt.hash(plaintext, saltRounds);
 }
 
+const comparePassword = async (plainText: string, hashPassword: string) => {
+return await bcrypt.compare(plainText , hashPassword)
+}
+
+
 // Hàm tạo user mới
 const handleCreateUser = async (
     fullName: string,
     email: string,
-    address: string , 
-    phone: string , 
-    avatar: string ,
-    role : string
+    address: string,
+    phone: string,
+    avatar: string,
+    role: string
 ) => {
 
     const defaultPassword = await hashPassword("123456");
@@ -26,11 +31,11 @@ const handleCreateUser = async (
             fullName: fullName,
             username: email,
             address: address,
-            password:defaultPassword,
+            password: defaultPassword,
             accountType: ACCOUNT_TYPE.SYSTEM,
             avatar: avatar,
             phone: phone,
-            roleId : +role // Chuyển role từ string sang number trước khi lưu vào database
+            roleId: +role // Chuyển role từ string sang number trước khi lưu vào database
         }
     });
     return newUser;
@@ -49,12 +54,14 @@ const getAllRoles = async () => {
 
 // Hàm xóa user theo id
 const handleDeleteUser = async (id: string) => {
-const deleteUser = await prisma.user.delete({where: { id: +id }});
+    const deleteUser = await prisma.user.delete({ where: { id: +id } });
 }
+
+
 
 // Hàm xem chi tiết user theo id
 const getUserById = async (id: string) => {
-   const user = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: { id: +id }
     });
     return user;
@@ -98,5 +105,6 @@ export {
     getUserById,
     updateUserById,
     getAllRoles,
-    hashPassword
+    hashPassword ,
+    comparePassword
 }
