@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.MediumText  // MediumText may be needed for MySql
+  expiresAt   DateTime
+}
+
+
 model user {
   id          Int     @id @default(autoincrement())
   username    String  @unique @db.VarChar(255)

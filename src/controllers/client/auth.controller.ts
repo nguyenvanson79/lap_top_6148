@@ -51,34 +51,37 @@ const postLogin = (req: Request, res: Response, next: NextFunction) => {
 
         req.logIn(user, (loginErr) => {
             if (loginErr) return next(loginErr);
-            return res.redirect("/");
+            return req.session.save((saveErr) => {
+                if (saveErr) return next(saveErr);
+                return res.redirect("/");
+            });
         });
     })(req, res, next);
 }
 
 const postRegister = async (req: Request, res: Response) => {
-    const {fullName , email , password  , confirmPassword} = req.body as TRegisterSchema
-const validate = await  RegisterSchema.safeParseAsync(req.body);
+    const { fullName, email, password, confirmPassword } = req.body as TRegisterSchema
+    const validate = await RegisterSchema.safeParseAsync(req.body);
 
-if (!validate.success) {
+    if (!validate.success) {
 
-    // lỗi 
-    const errorsZod = validate.error.issues ;
-    const errors =  errorsZod?.map(item => `${item.message} (${item.path[0]})`)
+        // lỗi 
+        const errorsZod = validate.error.issues;
+        const errors = errorsZod?.map(item => `${item.message} (${item.path[0]})`)
 
-    const oldData = {
-        fullName , 
-        email , 
-        password ,
-        confirmPassword
+        const oldData = {
+            fullName,
+            email,
+            password,
+            confirmPassword
+        }
+        return res.render("client/auth/register.ejs", {
+            errors, oldData
+        })
+
     }
-    return res.render("client/auth/register.ejs" , {
-        errors , oldData
-    })
 
-    }
-
-    await registerNewUser( fullName , email , password )
+    await registerNewUser(fullName, email, password)
     return res.redirect("/login")
 }
 

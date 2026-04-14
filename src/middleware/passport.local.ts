@@ -2,7 +2,7 @@ import { prisma } from "config/client";
 import passport from "passport";
 
 import { Strategy as LocalStrategy } from "passport-local";
-import { comparePassword } from "services/user.service";
+import { comparePassword, getUserById } from "services/user.service";
 
 
 
@@ -49,17 +49,20 @@ const configPassportLocal = () => {
         )
     );
 
-
-    passport.serializeUser(function (user: any, cb) {
-        process.nextTick(function () {
-            cb(null, { id: user.id, username: user.username });
-        });
+    // Lưu thông tin user vào session (chỉ lưu dữ liệu cần thiết)
+    passport.serializeUser(function (user: any, callback) {
+        callback(null, { id: user.id, username: user.username });
     });
 
-    passport.deserializeUser(function (user, cb) {
-        process.nextTick(function () {
-            return cb(null, user);
-        });
+    // Lấy thông tin user từ session và gắn vào req.user
+    passport.deserializeUser(async function (user: any, callback) {
+        try {
+            const { id } = user;
+            const userInDB = await getUserById(id);
+            return callback(null, userInDB || false);
+        } catch (error) {
+            return callback(error as Error);
+        }
     });
 
 }

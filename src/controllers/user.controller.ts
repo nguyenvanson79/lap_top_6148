@@ -13,9 +13,10 @@ import {
 
 const getHomePage = async (req: Request, res: Response) => {
     const products = await getProducts();
-
-
-    return res.render("client/home/show.ejs", { products });
+    return res.render("client/home/show.ejs", {
+        products,
+        user: req.user ?? null,
+    });
 };
 
 // Hiển thị trang form tạo user
@@ -31,7 +32,7 @@ const postCreateUser = async (req: Request, res: Response) => {
     const file = req.file;
     const avatar = file?.filename || "";
 
-    await handleCreateUser(fullName, username, address, phone, avatar , role);
+    await handleCreateUser(fullName, username, address, phone, avatar, role);
 
     return res.redirect("/admin/user");
 };
@@ -61,7 +62,7 @@ const getViewUser = async (req: Request, res: Response) => {
 
 // Xử lý cập nhật user theo id
 const postUpdateUser = async (req: Request, res: Response) => {
-    const { id , fullName, phone, role, address } = req.body;
+    const { id, fullName, phone, role, address } = req.body;
 
     const file = req.file;
     const avatar = file?.filename || "";
