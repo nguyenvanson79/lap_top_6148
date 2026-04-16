@@ -24,6 +24,15 @@ const getLoginPage = (req: Request, res: Response) => {
     });
 }
 
+const getSuccessRedirectPage = (req: Request, res: Response) => {
+    const user = req.user as any;
+    if (user?.role?.name === "ADMIN")  {
+        return res.redirect("/admin");
+    } else {
+        return res.redirect("/");
+    }
+}
+
 const getRegisterPage = (req: Request, res: Response) => {
     res.render("client/auth/register.ejs", {
         errors: [],
@@ -53,7 +62,7 @@ const postLogin = (req: Request, res: Response, next: NextFunction) => {
             if (loginErr) return next(loginErr);
             return req.session.save((saveErr) => {
                 if (saveErr) return next(saveErr);
-                return res.redirect("/");
+                return res.redirect("/success-redirect");
             });
         });
     })(req, res, next);
@@ -85,9 +94,23 @@ const postRegister = async (req: Request, res: Response) => {
     return res.redirect("/login")
 }
 
+const postLogout = (req: Request, res: Response , next: NextFunction) => {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+}
+
+
+
+
+
+
 export {
     getLoginPage,
     postLogin,
     getRegisterPage,
-    postRegister
+    postRegister,
+    getSuccessRedirectPage,
+    postLogout
 }

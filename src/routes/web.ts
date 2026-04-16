@@ -15,7 +15,8 @@ import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderP
 import fileUploadMiddleware from 'src/middleware/multer'
 import { getAdminCreateProductPage, getViewProduct, postAdminCreateProduct, postDeleteProduct, postUpdateProduct } from 'controllers/admin/product.controller'
 import { getProductPage } from 'controllers/client/product.controller'
-import { getLoginPage, getRegisterPage, postLogin, postRegister } from 'controllers/client/auth.controller'
+import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogin, postLogout, postRegister } from 'controllers/client/auth.controller'
+import { isAdmin, isLogin } from 'src/middleware/auth'
 
 
 
@@ -24,6 +25,7 @@ const webRouters = (app: Express) => {
 
     // client page
     router.get("/", getHomePage)
+    router.get("/success-redirect",getSuccessRedirectPage)
     router.get("/product/:id", getProductPage)
     router.get("/create-user", getCreateUserPage)
     router.get("/login", getLoginPage)
@@ -32,6 +34,9 @@ const webRouters = (app: Express) => {
 
     router.get("/register", getRegisterPage)
     router.post("/register", postRegister)
+
+    router.post("/logout", postLogout)
+
 
 
 
@@ -65,6 +70,6 @@ const webRouters = (app: Express) => {
 
 
 
-    app.use('/', router)
+    app.use('/',isAdmin, router)
 }
 export default webRouters

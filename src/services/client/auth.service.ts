@@ -54,10 +54,25 @@ const registerNewUser = async (fullName: string, email: string, password: string
 }
 
 
+// Hàm lấy thông tin user và role theo id
+const getUserWithRoleById = async (id: string) => {
+    const user = await prisma.user.findUnique({
+        where: { id: +id },
+        include: {
+            role: true
+        },
+        omit: {
+            password:true
+        },
+    });
+    return user;
+}
+
+
 
 
 export {
     isEmailExist,     // kiểm tra email tồn tại
     registerNewUser,  // đăng ký user
-   
+    getUserWithRoleById, // xem chi tiết user theo id
 }

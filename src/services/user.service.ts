@@ -11,7 +11,7 @@ const hashPassword = async (plaintext: string) => {
 }
 
 const comparePassword = async (plainText: string, hashPassword: string) => {
-return await bcrypt.compare(plainText , hashPassword)
+    return await bcrypt.compare(plainText, hashPassword)
 }
 
 
@@ -42,8 +42,13 @@ const handleCreateUser = async (
 };
 
 // Hàm lấy toàn bộ danh sách user
-const getAllUsers = async () => {
-    const users = await prisma.user.findMany();
+const getAllUsers = async (page: number) => {
+    const pageSize = 3;
+    const skip = (page - 1) * pageSize;
+    const users = await prisma.user.findMany({
+        skip: skip,
+        take: pageSize
+    });
     return users;
 }
 
@@ -105,6 +110,6 @@ export {
     getUserById,
     updateUserById,
     getAllRoles,
-    hashPassword ,
+    hashPassword,
     comparePassword
 }

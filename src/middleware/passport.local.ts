@@ -2,7 +2,8 @@ import { prisma } from "config/client";
 import passport from "passport";
 
 import { Strategy as LocalStrategy } from "passport-local";
-import { comparePassword, getUserById } from "services/user.service";
+import { getUserWithRoleById } from "services/client/auth.service";
+import { comparePassword } from "services/user.service";
 
 
 
@@ -13,15 +14,15 @@ const configPassportLocal = () => {
     passport.use(
         new LocalStrategy({
             passReqToCallback: true
-        } ,
+        },
 
             // hàm verify sẽ được gọi khi user login
             // username: giá trị input username
             // password: giá trị input password
             // callback: hàm trả kết quả cho passport
-            async function verify(req, username , password, callback) {
+            async function verify(req, username, password, callback) {
                 const { session } = req as any
-                if (session?.messages?.length){
+                if (session?.messages?.length) {
                     session.messages = [];
                 }
                 // tìm user trong database theo username
@@ -43,7 +44,7 @@ const configPassportLocal = () => {
                 }
 
                 // nếu đúng → đăng nhập thành công, trả về user
-                return callback(null, user);
+                return callback(null, user as any);
             }
 
         )
@@ -58,8 +59,8 @@ const configPassportLocal = () => {
     passport.deserializeUser(async function (user: any, callback) {
         try {
             const { id } = user;
-            const userInDB = await getUserById(id);
-            return callback(null, userInDB || false);
+            const userInDB = await getUserWithRoleById(id);
+            return callback(null, { ...userInDB});
         } catch (error) {
             return callback(error as Error);
         }

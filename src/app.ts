@@ -1,3 +1,5 @@
+/// <reference path="./types/index.d.ts" />
+
 import express from 'express'
 import 'dotenv/config'
 import webRouters from 'src/routes/web'
@@ -89,8 +91,8 @@ webRouters(app)
 initDatabase()
 
 // Nếu không khớp route nào → trả về 404
-app.use((req: express.Request, res: express.Response) => {
-    res.status(404).send('404 Not Found')
+app.use((req, res) => {
+    res.render("status/404.ejs")
 })
 
 app.listen(port, () => {
