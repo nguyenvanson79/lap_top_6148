@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getProducts } from "services/client/item.service";
+import { countTotalProductClientPages, getProducts } from "services/client/item.service";
 import {
     getAllUsers,
     handleCreateUser,
@@ -12,12 +12,19 @@ import {
 
 
 const getHomePage = async (req: Request, res: Response) => {
-    const products = await getProducts();
-    const { page}=   req.query ;
-    console.log(page)
+    const { page } = req.query;
+    let currentPage = page ? +page : 1;
+    if (currentPage <= 0) currentPage = 1;
+
+    const totalPages = await countTotalProductClientPages(8)
+
+
+    const products = await getProducts(currentPage, 8);
     return res.render("client/home/show.ejs", {
-        products,   
+        products,
         user: req.user ?? null,
+        totalPages: +totalPages,
+        page: +currentPage
     });
 };
 
@@ -75,6 +82,23 @@ const postUpdateUser = async (req: Request, res: Response) => {
 };
 
 
+const getProductFilterPages = async (req: Request, res: Response) => {
+    const { page } = req.query;
+    let currentPage = page ? +page : 1;
+    if (currentPage <= 0) currentPage = 1;
+    const totalPages = await countTotalProductClientPages(6);
+    const products = await getProducts(currentPage, 6);
+    //  return res.render("client/product/filter.ejs" , {
+    //     products ,
+    //     totalPages : +totalPages,
+    //     page : + currentPage
+    //  })
+     res.status(200).json({
+        data : products
+    })
+
+}
+
 
 
 
@@ -87,5 +111,6 @@ export {
     postCreateUser,
     postDeleteUser,
     getViewUser,
-    postUpdateUser
-};
+    postUpdateUser,
+    getProductFilterPages
+}

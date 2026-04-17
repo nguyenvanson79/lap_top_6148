@@ -8,6 +8,7 @@ import {
     postDeleteUser,
     getViewUser,
     postUpdateUser,
+    getProductFilterPages,
 
 
 } from '../controllers/user.controller'
@@ -36,6 +37,8 @@ const webRouters = (app: Express) => {
     router.post("/register", postRegister)
 
     router.post("/logout", postLogout)
+
+    router.get("/products", getProductFilterPages)
 
 
 
