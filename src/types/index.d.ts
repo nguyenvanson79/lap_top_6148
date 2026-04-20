@@ -1,8 +1,8 @@
-import { user, Role } from '@prisma/client'
+import {User as UserPrisma , Role } from '@prisma/client'
 
 declare global {
     namespace Express {
-        interface User extends Omit<user, 'password'> {
+        interface User extends UserPrisma{
             role?: Role;
         }
     }

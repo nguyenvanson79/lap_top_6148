@@ -15,7 +15,7 @@ import {
 import { getDashboardPage, getAdminUserPage, getAdminProductPage, getAdminOrderPage } from 'controllers/admin/dashboard.controller'
 import fileUploadMiddleware from 'src/middleware/multer'
 import { getAdminCreateProductPage, getViewProduct, postAdminCreateProduct, postDeleteProduct, postUpdateProduct } from 'controllers/admin/product.controller'
-import { getProductPage } from 'controllers/client/product.controller'
+import { getProductPage, postAddProductToCart } from 'controllers/client/product.controller'
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogin, postLogout, postRegister } from 'controllers/client/auth.controller'
 import { isAdmin, isLogin } from 'src/middleware/auth'
 
@@ -39,6 +39,7 @@ const webRouters = (app: Express) => {
     router.post("/logout", postLogout)
 
     router.get("/products", getProductFilterPages)
+    router.post("/add-product-to-cart/:id" , postAddProductToCart )
 
 
 

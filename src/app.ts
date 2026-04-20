@@ -87,6 +87,9 @@ app.use(async (req, res, next) => {
 // Gọi router chính (tất cả route sẽ nằm trong đây)
 webRouters(app)
 
+//  api
+// apiRoutes(app)
+
 // Chạy hàm tạo dữ liệu ban đầu (ví dụ: user admin)
 initDatabase()
 

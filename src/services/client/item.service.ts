@@ -1,12 +1,13 @@
 import { prisma } from "config/client"
+import { number } from "zod";
 
-const getProducts = async (page : number , pageSize : number) => {
-  const skip = (page -1) * pageSize
-    const products = await prisma.product.findMany({
-      skip : skip ,
-      take : pageSize
-    });
-    return products;
+const getProducts = async (page: number, pageSize: number) => {
+  const skip = (page - 1) * pageSize
+  const products = await prisma.product.findMany({
+    skip: skip,
+    take: pageSize
+  });
+  return products;
 }
 
 
@@ -16,16 +17,95 @@ const getProductById = async (id: number) => {
   });
 }
 
-const countTotalProductClientPages = async(pageSize: number) => {
-  const totalItems= await prisma.product.count();
+const countTotalProductClientPages = async (pageSize: number) => {
+  const totalItems = await prisma.product.count();
 
-  const totalPages = Math.ceil(totalItems/pageSize);
+  const totalPages = Math.ceil(totalItems / pageSize);
 
-  return totalPages ;
+  return totalPages;
 }
 
+const addProductToCart = async (
+  quantity: number,
+  productId: number,
+  user: Express.User
+) => {
+  const cart = await prisma.cart.findUnique({
+    where: {
+      userId: user.id
+    }
+  });
+
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId
+    }
+  });
+
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  if (cart) {
+    // cập nhật
+    //  cập nhật sum 
+    await prisma.cart.update({
+      where: { id: cart.id },
+      data: {
+        sum: {
+          increment: quantity,
+        }
+      }
+    })
+
+    //  cập nhật chi tiết 
+
+    const currentCartDetail = await prisma.cartDetail.findFirst({
+      where: {
+        productId: productId,
+        cartId: cart.id,
+      }
+    })
+    await prisma.cartDetail.upsert({
+      where: {
+        id: currentCartDetail?.id ?? 0
+      },
+      update: {
+        quantity: {
+          increment: quantity,
+        },
+      },
+      create: {
+        price: product.price,
+        quantity: quantity,
+        productId: productId,
+        cartId: cart.id,
+      },
+    });
+
+  } else {
+    // thêm 
+    await prisma.cart.create({
+      data: {
+        sum: quantity,
+        userId: user.id,
+        cartDetails: {
+          create: [
+            {
+              price: product.price,
+              quantity: quantity,
+              productId: productId
+            }
+          ]
+        }
+      }
+    });
+  }
+};
+
 export {
-    getProducts,
-    getProductById ,
-    countTotalProductClientPages
+  getProducts,
+  getProductById,
+  countTotalProductClientPages,
+  addProductToCart
 }

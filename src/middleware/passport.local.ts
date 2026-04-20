@@ -59,7 +59,7 @@ const configPassportLocal = () => {
     passport.deserializeUser(async function (user: any, callback) {
         try {
             const { id } = user;
-            const userInDB = await getUserWithRoleById(id);
+            const userInDB: any= await getUserWithRoleById(id);
             return callback(null, { ...userInDB});
         } catch (error) {
             return callback(error as Error);

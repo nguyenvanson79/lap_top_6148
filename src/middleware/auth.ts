@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import{user}from'@prisma/client'
+import{User}from'@prisma/client'
 
 // Middleware kiểm tra đã login chưa (dùng cho login/register)
 const isLogin = (req: Request, res: Response, next: NextFunction) => {

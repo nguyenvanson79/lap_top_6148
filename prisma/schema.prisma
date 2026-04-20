@@ -10,12 +10,11 @@ datasource db {
 model Session {
   id        String   @id
   sid       String   @unique
-  data      String   @db.MediumText  // MediumText may be needed for MySql
-  expiresAt   DateTime
+  data      String   @db.MediumText
+  expiresAt DateTime
 }
 
-
-model user {
+model User {
   id          Int     @id @default(autoincrement())
   username    String  @unique @db.VarChar(255)
   password    String  @db.VarChar(255)
@@ -25,8 +24,9 @@ model user {
   accountType String  @db.VarChar(255)
   avatar      String? @db.VarChar(255)
 
-  role   Role @relation(fields: [roleId], references: [id])
+  role   Role  @relation(fields: [roleId], references: [id])
   roleId Int
+  cart   Cart?
 
   @@map("users")
 }
@@ -36,7 +36,7 @@ model Role {
   name        String @unique @db.VarChar(255)
   description String @db.VarChar(255)
 
-  users user[]
+  users User[]
 
   @@map("roles")
 }
@@ -60,5 +60,33 @@ model Product {
   factory    String  @db.VarChar(255)
   target     String  @db.VarChar(255)
 
+  cartDetails CartDetail[]
+
   @@map("products")
+}
+
+model Cart {
+  id  Int @id @default(autoincrement())
+  sum Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  cartDetails CartDetail[]
+
+  @@map("carts")
+}
+
+model CartDetail {
+  id       Int @id @default(autoincrement())
+  price    Int
+  quantity Int
+
+  cart   Cart @relation(fields: [cartId], references: [id])
+  cartId Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  @@map("cart_detail")
 }
