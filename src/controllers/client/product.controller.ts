@@ -7,8 +7,8 @@ const getProductPage = async (req: Request, res: Response) => {
     const product = await getProductById(+id);
     return res.render("client/product/detail.ejs", { product });
 }
-// thêm sp vào giỏ hàng 
 
+// thêm sp vào giỏ hàng 
 const postAddProductToCart = async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = req.user;
@@ -20,4 +20,11 @@ const postAddProductToCart = async (req: Request, res: Response) => {
     return res.redirect("/");
 }
 
-export { getProductPage, postAddProductToCart }
+// cart
+const getCartPage = async (req : Request , res : Response) =>{
+    const user = req.user ;
+    if (!user) return res.redirect("/login");
+    return res.render("client/product/cart")
+}
+
+export { getProductPage, postAddProductToCart , getCartPage}
